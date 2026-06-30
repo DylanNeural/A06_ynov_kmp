@@ -6,7 +6,7 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.http.ContentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertTrue
@@ -14,7 +14,7 @@ import kotlin.test.assertTrue
 class MainViewModelTest {
 
     @Test
-    fun testLoadWeathersRealRequest() = runTest {
+    fun testLoadWeathersRealRequest() = runBlocking {
         val client = HttpClient {
             install(ContentNegotiation) {
                 json(Json { ignoreUnknownKeys = true }, contentType = ContentType.Any)
