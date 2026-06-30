@@ -25,8 +25,10 @@ buildConfig {
     // Le package où la classe sera générée
     packageName("com.amonteiro.a06_ynov_kmp")
 
-    // Récupération sécurisée de la clé
-    val weatherAPIKey = localProperties.getProperty("weather.api.key") ?: ""
+    // Récupération sécurisée de la clé (local.properties ou Variable d'environnement pour le CI)
+    val weatherAPIKey = localProperties.getProperty("weather.api.key") 
+                        ?: System.getenv("WEATHER_API_KEY") 
+                        ?: ""
 
     println("weatherAPIKey chargée : $weatherAPIKey")
 
