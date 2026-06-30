@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.androidApplication)
@@ -22,6 +23,12 @@ dependencies {
     implementation("io.insert-koin:koin-android:4.1.+")
 }
 
+val props = Properties()
+val localPropsFile = project.rootProject.file("local.properties")
+if (localPropsFile.exists()) {
+    props.load(localPropsFile.inputStream())
+}
+
 android {
     namespace = "com.amonteiro.a06_ynov_kmp"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -33,6 +40,19 @@ android {
         versionCode = 1
         versionName = "1.0"
     }
+
+    signingConfigs {
+        val keystorePath = props.getProperty("keystore.path")
+        if (!keystorePath.isNullOrEmpty()) {
+            create("release") {
+                storeFile = file(keystorePath)
+                storePassword = props.getProperty("keystore.password")
+                keyAlias = props.getProperty("keystore.alias")
+                keyPassword = props.getProperty("keystore.keyPassword")
+            }
+        }
+    }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -41,6 +61,9 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            if (signingConfigs.findByName("release") != null) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
     }
     compileOptions {
