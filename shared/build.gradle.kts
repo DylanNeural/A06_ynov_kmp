@@ -49,6 +49,14 @@ kotlin {
 
     jvm()
 
+    tasks.withType<Test> {
+        testLogging {
+            showStandardStreams = true
+            showExceptions = true
+            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        }
+    }
+
     androidLibrary {
        namespace = "com.amonteiro.a06_ynov_kmp.shared"
        compileSdk = libs.versions.android.compileSdk.get().toInt()

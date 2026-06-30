@@ -23,6 +23,7 @@ class MainViewModelTest {
         val dataSource = WeatherApiDataSource(client)
         val viewModel = MainViewModel(dataSource)
         
+        println("DEBUG CI - Key utilisée : ${com.amonteiro.a06_ynov_kmp.BuildConfig.WEATHER_API_KEY.take(5)}...")
         println("DEBUG CI - Lancement de la requête pour Paris...")
         viewModel.loadWeathers("Paris")
         
