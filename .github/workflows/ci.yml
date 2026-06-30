@@ -50,23 +50,24 @@ jobs:
           name: desktop-linux-deb
           path: desktopApp/build/compose/binaries/main/deb/*.deb
 
-  desktop-windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: gradle
-
-      - name: Build Desktop App (Windows)
-        run: ./gradlew :desktopApp:packageMsi
-
-      - name: Upload Desktop .msi (Windows)
-        uses: actions/upload-artifact@v4
-        with:
-          name: desktop-windows-msi
-          path: desktopApp/build/compose/binaries/main/msi/*.msi
+# Job Windows mis en commentaire pour gagner du temps
+#  desktop-windows:
+#    runs-on: windows-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#      
+#      - name: Set up JDK 17
+#        uses: actions/setup-java@v4
+#        with:
+#          java-version: '17'
+#          distribution: 'temurin'
+#          cache: gradle
+#
+#      - name: Build Desktop App (Windows)
+#        run: ./gradlew :desktopApp:packageMsi
+#
+#      - name: Upload Desktop .msi (Windows)
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: desktop-windows-msi
+#          path: desktopApp/build/compose/binaries/main/msi/*.msi
