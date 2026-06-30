@@ -23,21 +23,21 @@ class MainViewModelTest {
         val dataSource = WeatherApiDataSource(client)
         val viewModel = MainViewModel(dataSource)
         
+        println("DEBUG CI - Lancement de la requête pour Paris...")
         viewModel.loadWeathers("Paris")
         
-        // Attente de la fin de la requête (max 10s pour être sûr)
+        // On attend d'avoir soit de la donnée, soit une erreur (max 15s)
         var count = 0
-        while (viewModel.runInProgress.value && count < 100) {
+        while (viewModel.dataList.value.isEmpty() && viewModel.errorMessage.value.isEmpty() && count < 150) {
             delay(100)
             count++
         }
         
-        // On affiche l'erreur dans la console pour la voir dans les logs GitHub
-        if (viewModel.errorMessage.value.isNotEmpty()) {
-            println("ERREUR DÉTECTÉE : ${viewModel.errorMessage.value}")
-        }
+        println("DEBUG CI - Fin d'attente après ${count * 100}ms")
+        println("DEBUG CI - Liste size : ${viewModel.dataList.value.size}")
+        println("DEBUG CI - Erreur : '${viewModel.errorMessage.value}'")
 
-        assertTrue(viewModel.errorMessage.value.isEmpty(), "Erreur API détectée : ${viewModel.errorMessage.value}")
-        assertTrue(viewModel.dataList.value.isNotEmpty(), "La liste de météo est vide")
+        assertTrue(viewModel.errorMessage.value.isEmpty(), "L'API a renvoyé une erreur : ${viewModel.errorMessage.value}")
+        assertTrue(viewModel.dataList.value.isNotEmpty(), "La liste est vide, la requête n'a probablement pas abouti à temps.")
     }
 }
