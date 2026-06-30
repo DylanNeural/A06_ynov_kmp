@@ -25,14 +25,19 @@ class MainViewModelTest {
         
         viewModel.loadWeathers("Paris")
         
-        // Attente de la fin de la requête (max 5s)
+        // Attente de la fin de la requête (max 10s pour être sûr)
         var count = 0
-        while (viewModel.runInProgress.value && count < 50) {
+        while (viewModel.runInProgress.value && count < 100) {
             delay(100)
             count++
         }
         
-        assertTrue(viewModel.dataList.value.isNotEmpty(), "La liste de météo devrait être remplie")
-        assertTrue(viewModel.errorMessage.value.isEmpty(), "Il ne devrait pas y avoir d'erreur : ${viewModel.errorMessage.value}")
+        // On affiche l'erreur dans la console pour la voir dans les logs GitHub
+        if (viewModel.errorMessage.value.isNotEmpty()) {
+            println("ERREUR DÉTECTÉE : ${viewModel.errorMessage.value}")
+        }
+
+        assertTrue(viewModel.errorMessage.value.isEmpty(), "Erreur API détectée : ${viewModel.errorMessage.value}")
+        assertTrue(viewModel.dataList.value.isNotEmpty(), "La liste de météo est vide")
     }
 }
